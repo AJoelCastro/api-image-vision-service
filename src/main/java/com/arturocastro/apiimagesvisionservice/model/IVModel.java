@@ -2,15 +2,16 @@ package com.arturocastro.apiimagesvisionservice.model;
 
 public class IVModel {
 
-    private String prompts;
+    private String prompt;
 
     public IVModel() {
     }
 
     public String getPromtp() {
-        return prompts;
+        return prompt;
     }
+
     public void setPromtp(String promtp) {
-        this.prompts = promtp;
+        this.prompt = promtp;
     }
 }

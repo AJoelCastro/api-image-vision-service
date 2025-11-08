@@ -14,7 +14,7 @@ public class ImagesVisionSercive {
 
     private final OpenAIClient client;
 
-    public ImagesVisionSercive(@Value("openai.api.key") String apiKey) {
+    public ImagesVisionSercive(@Value("${openai.api.key}") String apiKey) {
         client = new OpenAIOkHttpClient.Builder()
                 .apiKey(apiKey)
                 .build();
@@ -26,7 +26,7 @@ public class ImagesVisionSercive {
                 .model(ImageModel.GPT_IMAGE_1_MINI)
                 .n(1)
                 .prompt(ivModel.getPromtp())
-                .size(ImageGenerateParams.Size._256X256)
+                .size(ImageGenerateParams.Size.AUTO)
                 .build();
 
         return client.images().generate(imageGenerateParams);
