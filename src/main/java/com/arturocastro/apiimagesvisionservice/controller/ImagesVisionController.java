@@ -18,9 +18,9 @@ public class ImagesVisionController {
     }
 
     @PostMapping("/generate-image")
-    public ResponseEntity<ImagesResponse> generateImage(@RequestBody IVModel ivModel) throws Exception{
-        System.out.println("Inside generateImage method" + ivModel);
-        ImagesResponse imagesResponse = imagesVisionSercive.generateImage(ivModel);
+    public ResponseEntity<ImagesResponse> generateImage(@RequestBody String prompt) throws Exception{
+        System.out.println("Inside generateImage method" + prompt);
+        ImagesResponse imagesResponse = imagesVisionSercive.generateImage(prompt);
         return ResponseEntity.ok(imagesResponse);
     }
 }

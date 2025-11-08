@@ -20,12 +20,12 @@ public class ImagesVisionSercive {
                 .build();
     }
 
-    public ImagesResponse generateImage (IVModel ivModel){
+    public ImagesResponse generateImage (String prompt){
 
         ImageGenerateParams imageGenerateParams = ImageGenerateParams.builder()
                 .model(ImageModel.GPT_IMAGE_1_MINI)
                 .n(1)
-                .prompt(ivModel.getPromtp())
+                .prompt(prompt)
                 .size(ImageGenerateParams.Size.AUTO)
                 .build();
 
