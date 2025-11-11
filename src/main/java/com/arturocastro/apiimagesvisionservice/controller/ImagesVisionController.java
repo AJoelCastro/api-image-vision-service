@@ -1,5 +1,6 @@
 package com.arturocastro.apiimagesvisionservice.controller;
 
+import com.arturocastro.apiimagesvisionservice.DTO.ImageAnalysisRequest;
 import com.arturocastro.apiimagesvisionservice.model.IVModel;
 import com.arturocastro.apiimagesvisionservice.service.ImagesVisionSercive;
 import com.openai.models.images.ImagesResponse;
@@ -26,8 +27,9 @@ public class ImagesVisionController {
     }
 
     @PostMapping("analyze-image")
-    public ResponseEntity<Response> analyzeImage(@RequestBody String uri) throws Exception{
-        Response response = imagesVisionSercive.analyzeImage(uri);
+    public ResponseEntity<Response> analyzeImage(@RequestBody ImageAnalysisRequest imageAnalysisRequest) throws Exception{
+        System.out.println("Inside analyzeImage method" + imageAnalysisRequest);
+        Response response = imagesVisionSercive.analyzeImage(imageAnalysisRequest);
         return ResponseEntity.ok(response);
     }
 

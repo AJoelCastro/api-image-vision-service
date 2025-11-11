@@ -1,19 +1,26 @@
 package com.arturocastro.apiimagesvisionservice.service;
 
+import com.arturocastro.apiimagesvisionservice.DTO.ImageAnalysisRequest;
+import com.arturocastro.apiimagesvisionservice.DTO.ImageAnalysisResponse;
 import com.arturocastro.apiimagesvisionservice.model.IVModel;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.core.JsonValue;
 import com.openai.models.ChatModel;
+import com.openai.models.Reasoning;
+import com.openai.models.ReasoningEffort;
+import com.openai.models.chat.completions.ChatCompletionContentPartText;
 import com.openai.models.graders.gradermodels.LabelModelGrader;
-import com.openai.models.images.ImageGenerateParams;
-import com.openai.models.images.ImageModel;
-import com.openai.models.images.ImagesResponse;
-import com.openai.models.responses.Response;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseInputItem;
-import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.images.*;
+import com.openai.models.responses.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 @Service
 public class ImagesVisionSercive {
@@ -38,15 +45,40 @@ public class ImagesVisionSercive {
         return client.images().generate(imageGenerateParams);
     }
 
-    public Response analyzeImage(String uri){
+    public Response analyzeImage(ImageAnalysisRequest imageAnalysisRequest) throws URISyntaxException {
+
         ResponseCreateParams responseCreateParams = ResponseCreateParams.builder()
-                .model(ChatModel.GPT_4_1_MINI)
-                .input(
-                        ResponseCreateParams.Input
-                                .ofText("Dime que personajes ves en la imagen, describelos y sus nombres, basate en la imagen unicamente:" + uri)
+                .model(ChatModel.GPT_5)
+                .inputOfResponse(
+                        List.of(
+                                ResponseInputItem.ofMessage(
+                                        ResponseInputItem.Message.builder()
+                                                .role(ResponseInputItem.Message.Role.USER)
+                                                .addContent(
+                                                        ResponseInputText.builder()
+                                                                .text(imageAnalysisRequest.getPrompt())
+                                                                .build()
+                                                )
+                                                .addContent(
+                                                        ResponseInputImage.builder()
+                                                                .detail(
+                                                                        ResponseInputImage.Detail.AUTO
+                                                                )
+                                                                .imageUrl(imageAnalysisRequest.getImageUrl())
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                        )
+                )
+                .reasoning(
+                        Reasoning.builder()
+                                .effort(
+                                        ReasoningEffort.MEDIUM
+                                )
+                                .build()
                 )
                 .build();
-
         return client.responses().create(responseCreateParams);
 
     }
