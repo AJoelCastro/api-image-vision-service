@@ -8,7 +8,7 @@ import com.openai.models.responses.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/api/openai/images-vision")
 public class ImagesVisionController {
@@ -21,14 +21,12 @@ public class ImagesVisionController {
 
     @PostMapping("/generate-image")
     public ResponseEntity<ImagesResponse> generateImage(@RequestBody String prompt) throws Exception{
-        System.out.println("Inside generateImage method" + prompt);
         ImagesResponse imagesResponse = imagesVisionSercive.generateImage(prompt);
         return ResponseEntity.ok(imagesResponse);
     }
 
     @PostMapping("analyze-image")
     public ResponseEntity<Response> analyzeImage(@RequestBody ImageAnalysisRequest imageAnalysisRequest) throws Exception{
-        System.out.println("Inside analyzeImage method" + imageAnalysisRequest);
         Response response = imagesVisionSercive.analyzeImage(imageAnalysisRequest);
         return ResponseEntity.ok(response);
     }
